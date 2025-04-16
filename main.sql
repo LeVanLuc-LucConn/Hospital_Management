@@ -14,8 +14,9 @@ CREATE TABLE [dbo].[NhanVienYTe](
     [PhongBan] [nvarchar](30) NULL,
     [LichLamViec] [nvarchar](100) NULL,
     [SoDienThoai] [char](10) NULL,
-    [HoSo] [nvarchar](100) NULL,
- CONSTRAINT [PK_NhanVienYTe] PRIMARY KEY CLUSTERED 
+    [CanCuoc] [char](12) NULL
+    [MaKhoa] [char](5) NULL
+     CONSTRAINT [PK_NhanVienYTe] PRIMARY KEY CLUSTERED 
 (
     [MaNhanVien] ASC
 )
@@ -26,9 +27,10 @@ GO
 CREATE TABLE [dbo].[BacSi](
     [MaBacSi] [char](5) NOT NULL,
     [HoTen] [nvarchar](50) NOT NULL,
-    [ChuyenKhoa] [nvarchar](30) NULL,
+    [MaKhoa] [char](5) NULL,
     [BangCap] [nvarchar](50) NULL,
     [KinhNghiem] [nvarchar](100) NULL,
+    [SoDienThoai] [char](10) NULL
     [MaHoSoBenhAn] [char](10) NULL,
  CONSTRAINT [PK_BacSi] PRIMARY KEY CLUSTERED 
 (
@@ -45,8 +47,9 @@ CREATE TABLE [dbo].[BenhNhan](
     [GioiTinh] [nvarchar](10) NULL,
     [DiaChi] [nvarchar](100) NULL,
     [SoDienThoai] [char](10) NULL,
-    [MaLichSuBenhAn] [char](10) NULL,
-    [MaBaoHiemYTe] [char](15) NULL,
+    [CanCuoc] [char](12) NULL
+    [MaKhoa] [char](5) NULL
+        [MaBaoHiemYTe] [char](15) NULL,
     [HoSoBenhAn] [nvarchar](200) NULL,
     [MaPhong] [char](5) NULL,
  CONSTRAINT [PK_BenhNhan] PRIMARY KEY CLUSTERED 
@@ -64,8 +67,7 @@ CREATE TABLE [dbo].[LichHen](
     [NgayHen] [datetime] NOT NULL,
     [ThoiGianHen] [nvarchar](20) NULL,
     [TrangThai] [nvarchar](20) NULL,
-    [KetQua] [nvarchar](200) NULL,
- CONSTRAINT [PK_LichHen] PRIMARY KEY CLUSTERED 
+     CONSTRAINT [PK_LichHen] PRIMARY KEY CLUSTERED 
 (
     [MaLichHen] ASC
 )
@@ -77,12 +79,11 @@ CREATE TABLE [dbo].[HoSoBenhAn](
     [MaHoSo] [char](10) NOT NULL,
     [MaBenhNhan] [char](10) NOT NULL,
     [MaBacSi] [char](5) NULL,
-    [NgayNhap] [date] NULL,
+    [NgayKham] [date] NULL,
     [ChuanDoan] [nvarchar](200) NULL,
     [DieuTri] [nvarchar](200) NULL,
-    [KetQua] [nvarchar](100) NULL,
-    [MaThuoc] [char](5) NULL,
- CONSTRAINT [PK_HoSoBenhAn] PRIMARY KEY CLUSTERED 
+    [MaBaoHiem] [char](15) NULL,
+     CONSTRAINT [PK_HoSoBenhAn] PRIMARY KEY CLUSTERED 
 (
     [MaHoSo] ASC
 )
@@ -107,8 +108,8 @@ CREATE TABLE [dbo].[Phong](
     [TenPhong] [nvarchar](30) NULL,
     [LoaiPhong] [nvarchar](30) NULL,
     [SoGiuong] [int] NULL,
-    [MaNhanVien] [char](5) NULL,
- CONSTRAINT [PK_Phong] PRIMARY KEY CLUSTERED 
+    [TinhTrang] [nvarchar](50) NULL
+     CONSTRAINT [PK_Phong] PRIMARY KEY CLUSTERED 
 (
     [MaPhong] ASC
 )
@@ -123,8 +124,8 @@ CREATE TABLE [dbo].[HoaDon](
     [TongTien] [decimal](12, 2) NULL,
     [TrangThaiThanhToan] [nvarchar](20) NULL,
     [PhuongThucThanhToan] [nvarchar](30) NULL,
-    [MaDonThuoc] [char](10) NULL,
- CONSTRAINT [PK_HoaDon] PRIMARY KEY CLUSTERED 
+    [MaHoSo] [char](10) NULL
+     CONSTRAINT [PK_HoaDon] PRIMARY KEY CLUSTERED 
 (
     [MaHoaDon] ASC
 )
@@ -138,7 +139,7 @@ CREATE TABLE [dbo].[DonThuoc](
     [MaBacSi] [char](5) NOT NULL,
     [NgayKe] [date] NULL,
     [LieuLuong] [nvarchar](100) NULL,
-    [CachDung] [nvarchar](200) NULL,
+    [CongDung] [nvarchar](200) NULL,
     [Gia] [decimal](10, 2) NULL,
  CONSTRAINT [PK_DonThuoc] PRIMARY KEY CLUSTERED 
 (
@@ -176,21 +177,7 @@ CREATE TABLE [dbo].[CT_DonThuoc](
     [MaThuoc] ASC
 )
 ) 
-GO
 
--- Bảng Thanh toán
-CREATE TABLE [dbo].[ThanhToan](
-    [MaThanhToan] [char](10) NOT NULL,
-    [MaHoaDon] [char](10) NOT NULL,
-    [NgayThanhToan] [date] NULL,
-    [SoTien] [decimal](12, 2) NULL,
-    [TinhTrang] [nvarchar](30) NULL,
-    [MaPhong] [char](5) NULL,
- CONSTRAINT [PK_ThanhToan] PRIMARY KEY CLUSTERED 
-(
-    [MaThanhToan] ASC
-)
-) 
 GO
 -- Tạo quan hệ giữa các bảng
 ALTER TABLE [dbo].[BenhNhan] WITH CHECK ADD CONSTRAINT [FK_BenhNhan_Phong] FOREIGN KEY([MaPhong])
